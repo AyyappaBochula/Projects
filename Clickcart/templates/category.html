@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Category: {{ category.name }}</h1>
+
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>${{ product.price }}</p>
+                <a href="{% url 'view_product' product.id %}" class="view-details">View Details</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

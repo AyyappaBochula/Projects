@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="home-container">
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+            <h3 class="product-name">{{ product.name }}</h3>
+            
+            <p class="product-price">
+                {% if product.on_sale %}
+                <strike><span class="original-price">₹{{ product.price }}</span></strike><br>
+                <span class="sale-price">₹{{ product.sale_price }}</span>
+                {% else %}
+                <span class="regular-price">₹{{ product.price }}</span>
+                {% endif %}
+            </p>
+
+            <form method="post" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
+                {% csrf_token %}
+                <label for="size-{{ product.id }}" class="size-label">Size:</label>
+                <select name="size" id="size-{{ product.id }}" class="size-select" required>
+                    <option value="" disabled selected>Select size</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+                <br>
+
+                <label for="quantity-{{ product.id }}" class="quantity-label">Quantity:</label>
+                <input type="number" name="quantity" id="quantity-{{ product.id }}" class="quantity-input" value="1" min="1" required>
+
+                <button type="submit" class="add-to-cart-button">Add to Cart</button>
+            </form>
+            <a href="{% url 'view_product' product.id %}" class="view-details">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
